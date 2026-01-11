@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Career Recommender</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/static/icon.png">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  
+  <div class="logo-header">
+    <div class="logo-container">
+      <img src="/static/UPNM.png" alt="Career Recommender Logo" class="logo" />
+      <img src="/static/icon.png" alt="Icon" class="logo" />
+
+    </div>
+  </div>
+  
+  <div class="title-container">
+    <h1>Welcome to CAREER RECOMMENDER</h1>
+  </div>
+  
+  <div class="container">
+    <p class="subtitle">Discover careers that match your unique skills, courses, and interests. Get personalized recommendations to guide your professional journey.</p>
+    
+    <!-- Stats Section -->
+    <div class="stats-container">
+      <div class="stat-box">
+        <span class="stat-number" id="course-count">0</span>
+        <span class="stat-label">Courses Added</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number" id="interest-count">0</span>
+        <span class="stat-label">Interests Selected</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">20+</span>
+        <span class="stat-label">Career Options</span>
+      </div>
+    </div>
+    
+    <form id="career-form">
+      <div>
+        <div class="section-title">
+          <i class="fas fa-graduation-cap"></i>
+          Courses and Grades
+        </div>
+        <p>Select your completed courses and grades. Add as many as you like to improve recommendations.</p>
+        <div id="courses-container"></div>
+        <button type="button" class="btn btn-secondary" id="add-course-btn">
+          <i class="fas fa-plus-circle"></i> Add another course
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="section-title">
+          <i class="fas fa-heart"></i>
+          Interests
+        </div>
+        <p>Select all interests that resonate with you. This helps us find careers that match your passions.</p>
+        <div id="interests-chips"></div>
+      </div>
+
+      <div style="margin-top: 2.5rem; text-align: center;">
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          <i class="fas fa-rocket"></i> Get Recommendations
+        </button>
+        <div class="error" id="error-msg" role="alert" aria-live="polite"></div>
+      </div>
+    </form>
+    
+    <div class="footer">
+      <p>© 2026 Career Path Recommendation System | Personalised Career Guidance</p>
+    </div>
+  </div>
+
+  <!-- Modal overlay for results -->
+  <div class="modal-overlay" id="results-overlay" aria-modal="true" role="dialog" aria-labelledby="results-title">
+    <div class="modal" id="results-modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="results-title">
+          <i class="fas fa-chart-line"></i> Your Career Matches
+        </h2>
+        <button type="button" class="modal-close-btn" id="results-close-btn" aria-label="Close recommendations">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="results-content"></div>
+        <div class="notes" id="advisories-box" style="display:none;">
+          <h3><i class="fas fa-lightbulb"></i> Advice</h3>
+          <ul id="advisories-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
