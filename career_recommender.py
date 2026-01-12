@@ -3,20 +3,15 @@ import csv
 from collections import defaultdict
 from career_map import (
     INTEREST_DOMAINS,
-    DOMAIN_SUBJECT_REQUIREMENTS,    
+    DOMAIN_SUBJECT_REQUIREMENTS,
     SUBJECT_BLOCKS,
     CAREER_PROFILES,
-    CAREER_REQUIREMENTS
+    CAREER_REQUIREMENTS,
+    normalize_interest,   # NEW: import helper from career_map.py
 )
 
-# -----------------------------
-# CONFIG
-# -----------------------------
-CSV_PATH = "training_data.csv"   # path to your CSV file
+CSV_PATH = "training_data.csv"
 
-# -----------------------------
-# GRADE MAPPING
-# -----------------------------
 GRADE_TO_VALUE = {
     'A+': 4.00,
     'A': 4.00,
@@ -33,22 +28,27 @@ GRADE_TO_VALUE = {
     'F': 0.00,
 }
 
+
 def grade_letter_to_value(letter):
     if letter is None:
         return 0.0
     return GRADE_TO_VALUE.get(str(letter).strip().upper(), 0.0)
 
+
 class CareerRecommender:
     def __init__(self, csv_path: str = CSV_PATH):
         self.csv_path = csv_path
         self.career_profiles = CAREER_PROFILES
-        self.career_priors = {}           # P(Career)
-        self.feature_probabilities = {}   # P(Feature | Career)
-        self.career_requirements = CAREER_REQUIREMENTS   # per-career subject minimums
+        self.career_priors = {}
+        self.feature_probabilities = {}
+        self.career_requirements = CAREER_REQUIREMENTS
 
         self.train_naive_bayes()
         print("Naïve Bayes model trained successfully from CSV data!")
 
+    # -----------------------------
+    # TRAINING DATA (same behaviour, but interests normalized)
+    # -----------------------------
     def create_training_data(self):
         records = []
 
@@ -60,7 +60,9 @@ class CareerRecommender:
                 interests = []
                 for key, val in row.items():
                     if key.startswith('interest_') and val and val.strip():
-                        interests.append(val.strip().lower())
+                        norm = normalize_interest(val)  # map to canonical tag
+                        if norm:
+                            interests.append(norm)
 
                 courses_grades = {}
                 for key, val in row.items():
@@ -77,7 +79,9 @@ class CareerRecommender:
 
         return records
 
-
+    # -----------------------------
+    # TRAINING (unchanged)
+    # -----------------------------
     def train_naive_bayes(self):
         data = self.create_training_data()
 
@@ -136,11 +140,14 @@ class CareerRecommender:
             uniq_blocks = len(feature_counts['blocks'][c_id]) or 1
             for k, count in feature_counts['blocks'][c_id].items():
                 self.feature_probabilities['blocks'][c_id][k] = (
-                    (count + alpha) / (total_blocks + alpha * (uniq_blocks + 10))
+                    (count + alpha) /
+                    (total_blocks + alpha * (uniq_blocks + 10))
                 )
 
+    # -----------------------------
+    # PROBABILITY FOR ONE CAREER
+    # -----------------------------
     def calculate_naive_bayes_probability(self, user_data, career_id):
-        # prior term: log P(Career)
         prob_log = math.log(self.career_priors.get(career_id, 1e-6))
 
         # 1. BLOCKS / GRADES
@@ -160,7 +167,6 @@ class CareerRecommender:
             avg_grade = total_grade / max(block_counts[block], 1)
             user_block_strengths[block] = avg_grade
 
-        # main block for this career
         main_blocks = list(self.feature_probabilities['blocks'][career_id].keys())
         main_block = main_blocks[0] if main_blocks else None
         main_block_avg = user_block_strengths.get(
@@ -170,11 +176,10 @@ class CareerRecommender:
 
         low_grade_threshold = grade_letter_to_value("C")
 
-        # strong penalty if user is weak in core block
         if main_block is not None and main_block_avg < low_grade_threshold:
             prob_log -= 8.0
 
-        # 2. INTERESTS (simple NB term)
+        # 2. INTERESTS (same NB term; UI interests already normalized in app.py)
         INTEREST_SCALE = 0.5
         for interest in user_data.get('interests', []):
             p = self.feature_probabilities['interests'][career_id].get(interest, 1e-6)
@@ -192,8 +197,23 @@ class CareerRecommender:
 
             prob_log += weight * log_base
 
+        # 4. HARD REQUIREMENT PENALTY (new but simple)
+        reqs = self.career_requirements.get(career_id, {}).get("min_grade_subjects", {})
+        for subject, min_letter in reqs.items():
+            user_letter = user_data.get('courses_grades', {}).get(subject)
+            if not user_letter:
+                prob_log -= 15.0
+                continue
+            user_val = grade_letter_to_value(user_letter)
+            min_val = grade_letter_to_value(min_letter)
+            if user_val < min_val:
+                prob_log -= 15.0
+
         return prob_log
 
+    # -----------------------------
+    # DOMAIN ADVISORIES (unchanged)
+    # -----------------------------
     def compute_domain_advisories(self, user_data):
         user_interests = {i.strip().lower() for i in user_data.get("interests", [])}
         user_domains = {INTEREST_DOMAINS[i] for i in user_interests if i in INTEREST_DOMAINS}
@@ -231,6 +251,9 @@ class CareerRecommender:
 
         return advisories
 
+    # -----------------------------
+    # RECOMMEND (unchanged)
+    # -----------------------------
     def recommend(self, user_data, top_k=3):
         scores = []
         for c_id in self.career_profiles.keys():
@@ -240,7 +263,6 @@ class CareerRecommender:
         if not scores:
             return {"careers": [], "advisories": []}
 
-        # softmax normalization so total probability = 1.0
         max_log_p = max(s for _, s in scores)
         normalized = []
         for c_id, log_p in scores:

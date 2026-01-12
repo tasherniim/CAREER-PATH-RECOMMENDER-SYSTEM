@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from career_recommender import CareerRecommender
-from career_map import SUBJECT_OPTIONS, INTEREST_OPTIONS
+from career_map import SUBJECT_OPTIONS, INTEREST_OPTIONS, normalize_interest    
 
 app = Flask(__name__)
 CORS(app)
@@ -25,8 +25,17 @@ def api_meta():
 @app.route("/api/recommend", methods=["POST"])
 def recommend():
     data = request.get_json(force=True)
-    interests = data.get("interests", [])
+
+    # raw interests from frontend
+    raw_interests = data.get("interests", [])
     courses_grades = data.get("courses_grades", {})
+
+    # normalize to canonical tags
+    interests = []
+    for i in raw_interests:
+        norm = normalize_interest(i)
+        if norm:
+            interests.append(norm)
 
     user_data = {
         "interests": interests,
@@ -49,6 +58,7 @@ def recommend():
         "careers": career_results,
         "advisories": scores.get("advisories", []),
     })
+
 
 
 if __name__ == "__main__":
