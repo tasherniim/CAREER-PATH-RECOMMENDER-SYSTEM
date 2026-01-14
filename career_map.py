@@ -472,21 +472,6 @@ CAREER_PROFILES = {
         ],
     },
     19: {
-        'name': 'Cloud Security Engineer',
-        'description': 'Secure cloud infrastructure and services',
-        'subjects': [
-            'Computer Networks',
-            'Operating Systems',
-            'Computer and Network Security',
-            'Information Security Management',
-        ],
-        'interests': [
-            'cloud',
-            'security',
-            'cybersecurity',
-        ],
-    },
-    20: {
         'name': 'Cloud Engineer',
         'description': 'Design and maintain cloud infrastructure and services',
         'subjects': [
@@ -502,37 +487,23 @@ CAREER_PROFILES = {
             'network',
         ],
     },
-    21: {
+    20: {
         'name': 'DevOps Engineer',
         'description': 'Automate deployment and infrastructure for software systems',
         'subjects': [
-            'Operating Systems',
             'Computer Networks',
-            'Software Engineering and Design',
+            'Operating Systems',
+            'Computer and Network Security',
             'Web Programming and Development',
         ],
         'interests': [
-            'devops',
             'cloud',
+            'devops',
             'software development',
+            'network',
         ],
     },
-    22: {
-        'name': 'Site Reliability Engineer',
-        'description': 'Ensure reliability and performance of production systems',
-        'subjects': [
-            'Operating Systems',
-            'Computer Networks',
-            'Computer and Network Security',
-            'Software Engineering and Design',
-        ],
-        'interests': [
-            'site reliability',
-            'devops',
-            'cloud',
-        ],
-    },
-    23: {
+    21: {
         'name': 'UI/UX Designer',
         'description': 'Design user interfaces and user experiences for digital products',
         'subjects': [
@@ -548,7 +519,7 @@ CAREER_PROFILES = {
             'digital marketing',
         ],
     },
-    24: {
+    22: {
         'name': 'Product Manager',
         'description': 'Define product vision and coordinate cross-functional delivery',
         'subjects': [
@@ -565,7 +536,7 @@ CAREER_PROFILES = {
             'business intelligence',
         ],
     },
-    25: {
+    23: {
         'name': 'E-Commerce Specialist',
         'description': 'Manage and optimize e-commerce platforms and digital sales',
         'subjects': [
@@ -580,7 +551,7 @@ CAREER_PROFILES = {
             'digital marketing',
         ],
     },
-    26: {
+    24: {
         'name': 'Digital Marketing Technologist',
         'description': 'Use technology and data to run and optimize digital campaigns',
         'subjects': [
@@ -716,48 +687,36 @@ CAREER_REQUIREMENTS = {
             "Operating Systems": "C-",
         }
     },
-    19: {  # Cloud Security Engineer
-        "min_grade_subjects": {
-            "Computer Networks": "C",
-            "Computer and Network Security": "C",
-        }
-    },
-    20: {  # Cloud Engineer
+    19: {  # Cloud Engineer
         "min_grade_subjects": {
             "Computer Networks": "C",
             "Operating Systems": "C",
         }
     },
-    21: {  # DevOps Engineer
+    20: {  # DevOps Engineer
         "min_grade_subjects": {
             "Operating Systems": "C",
             "Software Engineering and Design": "C",
         }
     },
-    22: {  # Site Reliability Engineer
-        "min_grade_subjects": {
-            "Operating Systems": "B-",
-            "Computer Networks": "C",
-        }
-    },
-    23: {  # UI/UX Designer
+    21: {  # UI/UX Designer
         "min_grade_subjects": {
             "Human-Computer Interaction": "C",
         }
     },
-    24: {  # Product Manager
+    22: {  # Product Manager
         "min_grade_subjects": {
             "Software Engineering and Design": "B-",
             "E-Commerce": "C-",
         }
     },
-    25: {  # E-Commerce Specialist
+    23: {  # E-Commerce Specialist
         "min_grade_subjects": {
             "E-Commerce": "C",
             "Web Programming and Development": "C-",
         }
     },
-    26: {  # Digital Marketing Technologist
+    24: {  # Digital Marketing Technologist
         "min_grade_subjects": {
             "E-Commerce": "C-",
             "Introduction to Data Analytics": "C-",

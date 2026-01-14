@@ -240,7 +240,6 @@ class CareerRecommender:
         if not scores:
             return {"careers": [], "advisories": []}
 
-        # softmax normalization so total probability = 1.0
         max_log_p = max(s for _, s in scores)
         normalized = []
         for c_id, log_p in scores:
