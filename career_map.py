@@ -1,3 +1,50 @@
+INTEREST_NORMALIZATION = {
+    "software development": "software development",
+    "web development": "web development",
+    "coding": "coding",
+    "mobile development": "mobile development",
+    "game development": "game development",
+
+    "data": "data",
+    "statistics": "statistics",
+    "business intelligence": "business intelligence",
+    "data engineering": "data engineering",
+    "machine learning": "machine learning",
+    "research and academia": "research and academia",
+
+    "network": "network",
+    "security": "security",
+    "cybersecurity": "cybersecurity",
+    "forensics": "forensics",
+
+    "ui/ux": "ui/ux",
+    "product management": "product management",
+    "digital marketing": "digital marketing",
+
+    "cloud": "cloud",
+    "devops": "devops",
+    "site reliability": "site reliability",
+
+    "ecommerce and fintech": "ecommerce and fintech",
+
+    # CSV-specific variants
+    "database": "data",
+    "business analysis": "ecommerce and fintech",
+    "big data": "data engineering",
+    "robotics": "software development",
+    "project management": "product management",
+    "ethical hacking": "forensics",
+    "governance and compliance": "security",
+    "tech ethics and law": "security",
+    "simulation and operations research": "data",
+}
+
+def normalize_interest(raw: str):
+    if not raw:
+        return None
+    key = raw.strip().lower()
+    return INTEREST_NORMALIZATION.get(key)
+
 SUBJECT_OPTIONS = [
     "Big Data Analytics and Development",
     "Computational Intelligence",
@@ -21,8 +68,45 @@ SUBJECT_OPTIONS = [
     "Software Engineering and Design",
     "Statistics",
     "Web Programming and Development",
-    "Wireless Network Security"
-      ]
+    "Wireless Network Security",
+]
+
+INTEREST_OPTIONS = [
+    # software / coding / web
+    "software development",
+    "web development",
+    "coding",
+    "mobile development",
+    "game development",
+
+    # data / AI / analytics / research
+    "data",
+    "machine learning",
+    "statistics",
+    "data engineering",
+    "business intelligence",
+    "research and academia",
+
+    # network / security / forensics
+    "network",
+    "security",
+    "cybersecurity",
+    "forensics",
+
+    # ui/ux / product / digital
+    "ui/ux",
+    "product management",
+    "digital marketing",
+
+    # cloud / devops / reliability
+    "cloud",
+    "devops",
+    "site reliability",
+
+    # business / domain-focused
+    "ecommerce and fintech",
+]
+
       
 INTEREST_OPTIONS = [
     # software / coding / web
@@ -83,7 +167,7 @@ INTEREST_DOMAINS = {
     "forensics": "security",
 
     # ui/ux / product / digital
-    "UI/UX": "uiux",
+    "ui/ux": "uiux",
     "product management": "uiux",
     "digital marketing": "uiux",
 
@@ -97,7 +181,6 @@ INTEREST_DOMAINS = {
 }
 
 DOMAIN_SUBJECT_REQUIREMENTS = {
-    # strong in programming / software engineering
     "software": {
         "Fundamentals of Programming": "C",
         "Object-oriented Programming": "C",
@@ -105,33 +188,28 @@ DOMAIN_SUBJECT_REQUIREMENTS = {
         "Software Engineering and Design": "C-",
     },
 
-    # strong in statistics + analytics + big data
     "data": {
         "Statistics": "C",
         "Introduction to Data Analytics": "C",
         "Big Data Analytics and Development": "C-",
     },
 
-    # strong in networks + security fundamentals
     "security": {
         "Computer Networks": "C",
         "Computer and Network Security": "C-",
         "Information Security Management": "C-",
     },
 
-    # strong in HCI / UX
     "uiux": {
         "Human-Computer Interaction": "C-",
     },
 
-    # strong in OS + networks + security (for cloud/devops)
     "cloud": {
         "Operating Systems": "C",
         "Computer Networks": "C",
         "Computer and Network Security": "C-",
     },
 
-    # strong in web + DB + basic analytics (for business/e‑commerce)
     "business": {
         "E-Commerce": "C",
         "Database Systems": "C-",
@@ -139,7 +217,6 @@ DOMAIN_SUBJECT_REQUIREMENTS = {
     },
 }
 
-# INTERNAL: multi-tag version (for you to maintain)
 SUBJECT_BLOCK_TAGS = {
     "Fundamentals of Programming": ["programming"],
     "Object-oriented Programming": ["programming"],
@@ -170,7 +247,36 @@ SUBJECT_BLOCK_TAGS = {
     "E-Commerce": ["web", "business"],
 }
 
-# Public: single main block per subject for the Naive Bayes model
+SUBJECT_BLOCK_TAGS = {
+    "Fundamentals of Programming": ["programming"],
+    "Object-oriented Programming": ["programming"],
+    "Data Structures": ["programming"],
+    "Software Engineering and Design": ["programming"],
+    "Web Programming and Development": ["programming", "web"],
+    "Computer Organisation and Architecture": ["programming"],
+
+    "Statistics": ["data"],
+    "Introduction to Data Analytics": ["data", "business"],
+    "Big Data Analytics and Development": ["data", "data engineering"],
+    "Computational Intelligence": ["data", "ai"],
+
+    "Computer Networks": ["security", "cloud"],
+    "Operating Systems": ["security", "cloud", "infrastructure"],
+    "Computer and Network Security": ["security", "cloud"],
+    "Information Security Management": ["security", "business"],
+    "Wireless Network Security": ["security", "cloud"],
+    "Cryptography": ["security"],
+
+    "Digital Forensics": ["security", "forensics"],
+    "File System Forensics": ["security", "forensics"],
+    "Network Forensics": ["security", "forensics"],
+
+    "Database Systems": ["web", "data", "business"],
+    "Human-Computer Interaction": ["web", "uiux"],
+    "Computer Graphics and Visualisation": ["web", "uiux"],
+    "E-Commerce": ["web", "business"],
+}
+
 SUBJECT_BLOCKS = {
     subject: tags[0] if isinstance(tags, list) and tags else tags
     for subject, tags in SUBJECT_BLOCK_TAGS.items()
@@ -194,8 +300,6 @@ CAREER_PROFILES = {
             'software development',
             'web development',
             'coding',
-            'applications',
-            'problem solving',
         ],
     },
     2: {
@@ -203,17 +307,15 @@ CAREER_PROFILES = {
         'description': 'Analyze data and build predictive models',
         'subjects': [
             'Statistics',
-            'Discrete Mathematics',
             'Introduction to Data Analytics',
             'Big Data Analytics and Development',
             'Computational Intelligence',
         ],
         'interests': [
             'data',
-            'analytics',
             'machine learning',
             'statistics',
-            'research',
+            'research and academia',
         ],
     },
     3: {
@@ -229,7 +331,7 @@ CAREER_PROFILES = {
         'interests': [
             'network',
             'security',
-            'infrastructure',
+            'cloud',
         ],
     },
     4: {
@@ -239,7 +341,6 @@ CAREER_PROFILES = {
             'Computer and Network Security',
             'Information Security Management',
             'Digital Forensics',
-            'Ethical Hacker',
             'File System Forensics',
             'Network Forensics',
         ],
@@ -261,8 +362,7 @@ CAREER_PROFILES = {
         ],
         'interests': [
             'web development',
-            'frontend',
-            'backend',
+            'software development',
             'ui/ux',
         ],
     },
@@ -277,10 +377,9 @@ CAREER_PROFILES = {
             'Web Programming and Development',
         ],
         'interests': [
-            'software development',
             'mobile development',
+            'software development',
             'coding',
-            'web development',
         ],
     },
     7: {
@@ -298,24 +397,9 @@ CAREER_PROFILES = {
             'software development',
             'web development',
             'coding',
-            'ui/ux',
         ],
     },
-    8: {
-        'name': 'Software QA Engineer',
-        'description': 'Design and execute tests to ensure software quality',
-        'subjects': [
-            'Fundamentals of Programming',
-            'Software Engineering and Design',
-            'Web Programming and Development',
-            'Database Systems',
-        ],
-        'interests': [
-            'software development',
-            'coding',
-            'devops',
-        ],
-    },
+   
     9: {
         'name': 'Systems Analyst',
         'description': 'Analyze requirements and design effective IT systems',
@@ -567,8 +651,9 @@ CAREER_PROFILES = {
     },
 }
 
+
 CAREER_REQUIREMENTS = {
-    1: {  # Software Engineer
+    1: {
         "min_grade_subjects": {
             "Fundamentals of Programming": "C",
             "Object-oriented Programming": "C",
@@ -576,28 +661,28 @@ CAREER_REQUIREMENTS = {
             "Software Engineering and Design": "A",
         }
     },
-    2: {  # Data Scientist
+    2: {
         "min_grade_subjects": {
             "Statistics": "C",
             "Introduction to Data Analytics": "C",
             "Big Data Analytics and Development": "C-",
         }
     },
-    3: {  # Network Security Engineer
+    3: {
         "min_grade_subjects": {
             "Computer Networks": "C",
             "Operating Systems": "C-",
             "Computer and Network Security": "C-",
         }
     },
-    4: {  # Cybersecurity Analyst
+    4: {
         "min_grade_subjects": {
             "Computer and Network Security": "C",
             "Information Security Management": "C",
             "Digital Forensics": "C-",
         }
     },
-    5: {  # Web Developer
+    5: {
         "min_grade_subjects": {
             "Fundamentals of Programming": "C",
             "Web Programming and Development": "C",
@@ -605,83 +690,78 @@ CAREER_REQUIREMENTS = {
             "Human-Computer Interaction": "C-",
         }
     },
-    6: {  # Mobile Application Developer
+    6: {
         "min_grade_subjects": {
             "Fundamentals of Programming": "C",
             "Object-oriented Programming": "C",
             "Data Structures": "C-",
         }
     },
-    7: {  # Full-Stack Developer
+    7: {
         "min_grade_subjects": {
             "Fundamentals of Programming": "C",
             "Web Programming and Development": "C",
             "Database Systems": "C-",
         }
     },
-    8: {  # Software QA Engineer
-        "min_grade_subjects": {
-            "Fundamentals of Programming": "C-",
-            "Software Engineering and Design": "C",
-        }
-    },
-    9: {  # Systems Analyst
+ 
+    9: {
         "min_grade_subjects": {
             "Software Engineering and Design": "C",
             "Database Systems": "C-",
         }
     },
-    10: {  # Game Developer
+    10: {
         "min_grade_subjects": {
             "Fundamentals of Programming": "C",
             "Computer Graphics and Visualisation": "C-",
         }
     },
-    11: {  # Data Analyst
+    11: {
         "min_grade_subjects": {
             "Statistics": "C",
             "Introduction to Data Analytics": "C",
         }
     },
-    12: {  # Business Intelligence Analyst
+    12: {
         "min_grade_subjects": {
             "Statistics": "C",
             "Introduction to Data Analytics": "C",
             "Database Systems": "C-",
         }
     },
-    13: {  # Data Engineer
+    13: {
         "min_grade_subjects": {
             "Introduction to Data Analytics": "C",
             "Big Data Analytics and Development": "C-",
         }
     },
-    14: {  # Machine Learning Engineer
+    14: {
         "min_grade_subjects": {
             "Statistics": "C",
             "Computational Intelligence": "C",
         }
     },
-    15: {  # Information Security Analyst
+    15: {
         "min_grade_subjects": {
             "Operating Systems": "C-",
             "Computer and Network Security": "C",
         }
     },
-    16: {  # SOC Analyst
+    16: {
         "min_grade_subjects": {
             "Computer and Network Security": "C",
             "Information Security Management": "C",
             "Digital Forensics": "C-",
         }
     },
-    17: {  # Digital Forensics Investigator
+    17: {
         "min_grade_subjects": {
             "Digital Forensics": "C",
             "File System Forensics": "C-",
         }
     },
-    18: {  # Network Engineer
+    18: {
         "min_grade_subjects": {
             "Computer Networks": "C",
             "Operating Systems": "C-",
@@ -722,5 +802,4 @@ CAREER_REQUIREMENTS = {
             "Introduction to Data Analytics": "C-",
         }
     },
-
 }
