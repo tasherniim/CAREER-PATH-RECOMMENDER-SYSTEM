@@ -108,41 +108,7 @@ INTEREST_OPTIONS = [
 ]
 
       
-INTEREST_OPTIONS = [
-    # software / coding / web
-    "software development",
-    "web development",
-    "coding",
-    "mobile development",
-    "game development",
 
-    # data / AI / analytics / research
-    "data",
-    "machine learning",
-    "statistics",
-    "data engineering",
-    "business intelligence",
-    "research and academia",
-
-    # network / security / forensics
-    "network",
-    "security",
-    "cybersecurity",
-    "forensics",
-
-    # ui/ux / product / digital
-    "UI/UX",
-    "product management",
-    "digital marketing",
-
-    # cloud / devops / reliability
-    "cloud",
-    "devops",
-    "site reliability",
-
-    # business / domain-focused
-    "ecommerce and fintech",
-]
 
 INTEREST_DOMAINS = {
     # software
